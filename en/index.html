@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calcular Day Tokens</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.10/sweetalert2.min.css" />
+</head>
+<body>
+    <div id="app">
+        <v-app>
+            <main>
+                <template>
+                    <v-toolbar dark>
+                        <v-toolbar-title class="white--text">Calcular Day Tokens</v-toolbar-title>
+                    </v-toolbar>
+                </template>
+                <template>
+                    <v-card class="grey lighten-3 elevation-0">
+                        <v-card-text>
+                            <v-container>
+                                <v-layout row wrap>
+                                    <v-flex md3>
+                                        <v-subheader>
+                                            Digite seu Endereço Ethereum 
+                                        </v-subheader>
+                                    </v-flex>
+                                    <v-flex md9>
+                                        <v-text-field
+                                            name="etheriumAddress"
+                                            label="Digite o valor do seu endereço Ethereum"
+                                            id="etheriumAddress"
+                                            v-model.lazy="form.etheriumAddress"
+                                            v-on:blur="getAddress()"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex md3>
+                                        <v-subheader>
+                                            Ethereum inicial de Investimento
+                                        </v-subheader>
+                                    </v-flex>
+                                    <v-flex md9>
+                                        <v-text-field
+                                            name="etherium"
+                                            label="Digite o valor que deseja investir"
+                                            id="etherium"
+                                            v-model.lazy="form.etherium"
+                                            prefix="ETH"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex md3>
+                                        <v-subheader>
+                                            TimeMint
+                                        </v-subheader>
+                                    </v-flex>
+                                    <v-flex md9>
+                                        <v-text-field
+                                            name="timemint"
+                                            label="Digite o número da sua TimeMint"
+                                            id="timemint"
+                                            v-model.lazy="form.timeMint"
+                                            type="number"
+                                            :max="form.max"
+                                            :min="form.min"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex md3>
+                                        <v-subheader>
+                                            ChronoPower
+                                        </v-subheader>
+                                    </v-flex>
+                                    <v-flex md9>
+                                        <v-text-field
+                                            name="chronoPower"
+                                            id="chronoPower"
+                                            v-model="form.chronoPower"
+                                            type="number"
+                                            suffix="%"
+                                            placeholder="Digite sua TimeMint para visualizar sua ChronoPower"
+                                            :readonly="true"
+                                        ></v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-text>
+                    </v-card>
+                </template>
+                <template>
+                    <v-card class="grey lighten-4 elevation-0">
+                        <v-card-text>
+                            <v-container>
+                                <v-layout row wrap>
+                                    <v-flex md3>
+                                        <v-subheader>
+                                            Days Tokens no Dia 0
+                                        </v-subheader>
+                                    </v-flex>
+                                    <v-flex md9>
+                                        <v-text-field
+                                            name="tokensDayZero"
+                                            id="tokensDayZero"
+                                            v-model="form.tokensDayZero"
+                                            type="number"
+                                            suffix="DAYS"
+                                            placeholder="Digite o ETH de investimento para visualizar seus DAYS no dia 0"
+                                            :readonly="true"
+                                        ></v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-text>
+                    </v-card>
+                </template>
+                <template>
+                    <v-container grid-list-md text-xs-center>
+                        <v-layout row wrap>
+                            <v-flex md6>
+                                <table class="table">
+                                    <caption>Períodos</caption>
+                                    <thead>
+                                        <tr>
+                                            <td>#</td>
+                                            <td>Período</td>
+                                            <td>Incio</td>
+                                            <td>Fim</td>
+                                            <td width="150">Efetividade</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, periodo) in chronoEra">
+                                            <td>#{{ item.era }}</td>
+                                            <td>#{{ periodo }}</td>
+                                            <td>{{ item.initDay }}</td>
+                                            <td>{{ item.lastDay }}</td>
+                                            <td>{{ item.effective.toFixed(20) }}%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </v-flex>
+                            <v-flex md6>
+                                <table class="table">
+                                    <caption>Simulação</caption>
+                                    <thead>
+                                        <tr>
+                                            <td>#</td>
+                                            <td>ChronoEra</td>
+                                            <td>ChronoPower</td>
+                                            <td>Valor Inicial</td>
+                                            <td>Valor Final</td>
+                                            <td>Ganho no período</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(simulation, chave) in simulations">
+                                            <td>{{ chave+1 }}</td>
+                                            <td>{{ simulation.period }}</td>
+                                            <td>{{ simulation.chronoPower }}</td>
+                                            <td>{{ simulation.start }}</td>
+                                            <td>{{ simulation.last }}</td>
+                                            <td>{{ simulation.diff }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>                                
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                </template>
+            </main>
+        </v-app>
+    </div>
+
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/vuetify/dist/vuetify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.3.4/vue-resource.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.10/sweetalert2.min.js"></script>
+    <script src="/transactions.js"></script>
+    <script src="/daysCalculator.js"></script>
+</body>
+</html>
