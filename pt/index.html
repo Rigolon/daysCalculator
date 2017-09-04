@@ -19,23 +19,22 @@
                 <template>
                     <v-card class="grey lighten-3 elevation-0">
                         <v-card-text>
-                            <v-container>
+                            <v-container grid-list-md text-xs-center>
                                 <v-layout row wrap>
                                     <v-flex md3>
                                         <v-subheader>
-                                            Digite seu Endereço Ethereum
+                                            Digite seu Endereço Ethereum ou, preencha os campos abaixo
                                         </v-subheader>
                                     </v-flex>
                                     <v-flex md9>
                                         <v-text-field
                                             name="etheriumAddress"
-                                            label="Digite o valor do seu endereço Ethereum"
+                                            label="Digite seu Endereço Ethereum ou, preencha os campos abaixo"
                                             id="etheriumAddress"
                                             v-model.lazy="form.etheriumAddress"
                                             v-on:blur="getAddress()"
                                         ></v-text-field>
-                                    </v-flex>                                    
-                                    <v-divider></v-divider>
+                                    </v-flex>
                                     <v-flex md3>
                                         <v-subheader>
                                             Ethereum inicial de Investimento
@@ -163,6 +162,9 @@
                                         </tr>
                                     </tbody>
                                 </table>                                
+                            </v-flex>
+                            <v-flex md12 class="grey lighten-3">
+                                <p class="mt-5 mb-4">Código disponível no <a target="_blank" href="https://github.com/Rigolon/daysCalculator">GitHub</a></p>
                             </v-flex>
                         </v-layout>
                     </v-container>
