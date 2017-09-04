@@ -23,13 +23,13 @@
                                 <v-layout row wrap>
                                     <v-flex md3>
                                         <v-subheader>
-                                            Digite seu Endereço Ethereum ou, preencha os campos abaixo
+                                            Digite seu Endereço Ethereum ou preencha os campos abaixo
                                         </v-subheader>
                                     </v-flex>
                                     <v-flex md9>
                                         <v-text-field
                                             name="etheriumAddress"
-                                            label="Digite seu Endereço Ethereum ou, preencha os campos abaixo"
+                                            label="Digite seu Endereço Ethereum ou preencha os campos abaixo"
                                             id="etheriumAddress"
                                             v-model.lazy="form.etheriumAddress"
                                             v-on:blur="getAddress()"
@@ -47,6 +47,7 @@
                                             id="etherium"
                                             v-model.lazy="form.etherium"
                                             suffix="ETH"
+                                            hint="Digite o separador decimal como uma vírgula ou ponto. Não use separador de milhar."
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex md3>

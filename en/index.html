@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Calculator Day Tokens</title>
+    <title>Day Tokens Calculator</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.10/sweetalert2.min.css" />
@@ -13,7 +13,7 @@
             <main>
                 <template>
                     <v-toolbar dark>
-                        <v-toolbar-title class="white--text">Calculator Day Tokens</v-toolbar-title>
+                        <v-toolbar-title class="white--text">Day Tokens Calculator</v-toolbar-title>
                     </v-toolbar>
                 </template>
                 <template>
@@ -23,13 +23,13 @@
                                 <v-layout row wrap>
                                     <v-flex md3>
                                         <v-subheader>
-                                            Type your address Ethereum or, fill the fields below
+                                            Type your address Ethereum or fill the fields below
                                         </v-subheader>
                                     </v-flex>
                                     <v-flex md9>
                                         <v-text-field
                                             name="etheriumAddress"
-                                            label="Type your address Ethereum or, fill the fields below"
+                                            label="Type your address Ethereum or fill the fields below"
                                             id="etheriumAddress"
                                             v-model.lazy="form.etheriumAddress"
                                             v-on:blur="getAddress()"
@@ -46,6 +46,7 @@
                                             label="Ethereum initial investment"
                                             id="etherium"
                                             v-model.lazy="form.etherium"
+                                            hint="Enter the decimal separator as a comma or dot. Do not use a thousand separator."
                                             suffix="ETH"
                                         ></v-text-field>
                                     </v-flex>
@@ -103,7 +104,7 @@
                                             v-model="form.tokensDayZero"
                                             type="number"
                                             suffix="DAYS"
-                                            placeholder="Enter yours investment ETH to view your DAYS on day 0"
+                                            placeholder="Enter your ETH investment to view your DAYs on day 0"
                                             :readonly="true"
                                         ></v-text-field>
                                     </v-flex>
