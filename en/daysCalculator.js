@@ -59,7 +59,7 @@ new Vue({
                 this.form.timeMint = Object.keys(this.transactionsAgrouped).indexOf(this.form.etheriumAddress) + 1;
             } else {
                 if (!!this.form.etheriumAddress) {
-                    alert('Não foi encontrado');
+                    swal('Oops..', msgAlert, 'error').catch(swal.noop);
                 }
             }
         },
