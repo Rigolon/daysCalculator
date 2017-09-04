@@ -60,6 +60,7 @@ new Vue({
             } else {
                 if (!!this.form.etheriumAddress) {
                     swal('Oops..', msgAlert, 'error').catch(swal.noop);
+                    this.form.etheriumAddress = null;
                 }
             }
         },
@@ -116,18 +117,32 @@ new Vue({
             };
 
             self.transactionsAgrouped = tmp;
+        },
+
+        formEtherium: function formEtherium(value) {
+            var n = Number(String(value).replace(',', '.'));
+            if (!!n) {
+
+                if(n < 1)
+                {
+                    swal("Oops", msgAlert2, 'error').catch(swal.noop);
+                    this.form.etherium = null;
+                    this.form.chronoPower = null;
+                    this.form.tokensDayZero = null;
+                } else {
+                    var calc = n * 24;
+                    this.form.tokensDayZero = calc;
+                }
+            } else {
+                this.form.etherium = null;
+                this.form.chronoPower = null;
+                this.form.tokensDayZero = null;
+            }
         }
+
     },
 
     watch: {
-
-        'form.etherium': function formEtherium(value) {
-            var n = Number(value.replace(',', '.'));
-            if (!!n) {
-                var calc = n * 24;
-                this.form.tokensDayZero = calc;
-            }
-        },
 
         'form.timeMint': function formTimeMint(value) {
             var self = this;
@@ -181,9 +196,9 @@ new Vue({
                     var valueCumulative = start * percentCumulative;
 
                     tmp.push({
-                        period: item,
-                        start: start,
                         chronoPower: calcPercent,
+                        period: item,
+                        start: Number(start),
                         last: valueCumulative,
                         diff: valueCumulative - start
                     });
