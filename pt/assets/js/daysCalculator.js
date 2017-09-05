@@ -1,6 +1,14 @@
+var configHttp = {
+    emulateHTTP: true,
+    emulateJSON: true
+};
+
 new Vue({
     el: "#app",
     data: {
+        loadingFeedback: false,
+        menu: false,
+        message: "",
         calcLoading: false,
         config: {
             chronoEraStep: 88
@@ -45,6 +53,35 @@ new Vue({
     },
 
     methods: {
+
+        send: function()
+        {
+            var self = this;
+
+            if(!!self.message.trim())
+            {
+                var data = {
+                    message: self.message.trim()
+                };
+
+                self.loadingFeedback = true;
+
+                self.$http.post('/contact.php', data, configHttp).then( function(r){
+                    if(r.body.status)
+                    {
+                        swal(msgSuccess, msgSuccessText, 'success').catch(swal.noop);
+                        self.message = '';
+                        self.loadingFeedback = false;
+                        self.menu = false;
+                    }
+                }, function(err){
+                    swal(Oops, msgErrorText, 'error').catch(swal.noop);
+                    self.message = '';
+                    self.loadingFeedback = false;
+                    self.menu = false;
+                });
+            }            
+        },
 
         getAddress: function getAddress() {
             if (!!this.transactionsAgrouped[this.form.etheriumAddress]) {

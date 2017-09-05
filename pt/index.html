@@ -16,6 +16,47 @@
                 <template>
                     <v-toolbar dark>
                         <v-toolbar-title class="white--text">Calculadora de Day Tokens</v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-menu
+                            offset-x
+                            :close-on-content-click="false"
+                            :nudge-width="300"
+                            v-model="menu"
+                            >
+                            <v-btn icon slot="activator">
+                                <v-icon v-on:click="menu = true">feedback</v-icon>
+                            </v-btn>
+                            <v-card>
+                                <v-list>
+                                    <v-list-tile>
+                                        <v-list-tile-title>Envie seu FeedBack</v-list-tile-title>
+                                    </v-list-tile>
+                                </v-list>
+                                <v-list>
+                                    <v-container fluid>
+                                        <v-layout row>
+                                            <v-flex xs12>
+                                                <template v-if="loadingFeedback">
+                                                    <v-progress-circular v-bind:size="50" indeterminate class="primary--text"></v-progress-circular>
+                                                </template>
+                                                <template v-else>
+                                                    <v-text-field
+                                                    name="feedback"
+                                                    label="Escreva sua mensagem e clique em enviar"
+                                                    textarea
+                                                    v-model="message"
+                                                    ></v-text-field>
+                                                </template>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                </v-list>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn :disabled="loadingFeedback" primary flat @click="send()">Enviar</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-menu>
                     </v-toolbar>
                 </template>
                 <template>
@@ -183,12 +224,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.10/sweetalert2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
-    <script src="/transactions.js"></script>
-    <script src="/daysCalculator.min.js"></script>
+    <script src="/assets/js/transactions.js"></script>
+    <script src="/assets/js/daysCalculator.min.js"></script>
 
     <script>
-        var msgAlert = "Seu endereço não foi encontrado nas transações.";
-        var msgAlert2 = "O valor de contribuição mínimo é de 1 ETH.";
+        var msgAlert       = "Seu endereço não foi encontrado nas transações.";
+        var msgAlert2      = "O valor de contribuição mínimo é de 1 ETH.";
+        var msgSuccess     = "Enviar com sucesso";
+        var msgSuccessText = "Sua mensagem foi enviada com sucesso. Caso tenha deixado seu contato, retornaremos com nossa posição.";
+        var Oops           = "Oops...";
+        var msgErrorText   = "Infelizmente não foi possível enviar sua mensagem.";
     </script>
     
 </body>
