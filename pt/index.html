@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8">    
     <title>Calculadora de Day Tokens</title>
     <meta content="Calculadora de Day Tokens gerados pela TimeMint. Um simples site para conferir seu rendimento de Days ao longo das Eras." name="description">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.10/sweetalert2.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
     <div id="app">
@@ -48,6 +49,7 @@
                                             id="etherium"
                                             v-model.lazy="form.etherium"
                                             suffix="ETH"
+                                            v-on:blur="formEtherium(form.etherium)"
                                             hint="Digite o separador decimal como uma vírgula ou ponto. Não use separador de milhar."
                                         ></v-text-field>
                                     </v-flex>
@@ -79,7 +81,7 @@
                                             v-model="form.chronoPower"
                                             type="number"
                                             suffix="%"
-                                            placeholder="Digite sua TimeMint para visualizar sua ChronoPower"
+                                            label="Digite sua TimeMint para visualizar sua ChronoPower"
                                             :readonly="true"
                                         ></v-text-field>
                                     </v-flex>
@@ -122,11 +124,11 @@
                                     <caption>Períodos</caption>
                                     <thead>
                                         <tr>
-                                            <td>#</td>
-                                            <td>Período</td>
-                                            <td>Incio</td>
-                                            <td>Fim</td>
-                                            <td width="150">Efetividade</td>
+                                            <th>#</th>
+                                            <th>Período</th>
+                                            <th>Incio</th>
+                                            <th>Fim</th>
+                                            <th width="150">Efetividade</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -145,22 +147,22 @@
                                     <caption>Simulação</caption>
                                     <thead>
                                         <tr>
-                                            <td>#</td>
-                                            <td>ChronoEra</td>
-                                            <td>ChronoPower</td>
-                                            <td>Valor Inicial</td>
-                                            <td>Valor Final</td>
-                                            <td>Ganho no período</td>
+                                            <th>#</th>
+                                            <th>ChronoEra</th>
+                                            <th>ChronoPower</th>
+                                            <th>Valor Inicial</th>
+                                            <th>Valor Final</th>
+                                            <th>Ganho no período</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(simulation, chave) in simulations">
                                             <td>{{ chave+1 }}</td>
                                             <td>{{ simulation.period }}</td>
-                                            <td>{{ simulation.chronoPower }}</td>
-                                            <td>{{ simulation.start }}</td>
-                                            <td>{{ simulation.last }}</td>
-                                            <td>{{ simulation.diff }}</td>
+                                            <td>{{ simulation.chronoPower.toFixed(20) }}</td>
+                                            <td>{{ simulation.start.toFixed(10) }}</td>
+                                            <td>{{ simulation.last.toFixed(10) }}</td>
+                                            <td>{{ simulation.diff.toFixed(10) }}</td>
                                         </tr>
                                     </tbody>
                                 </table>                                
@@ -180,11 +182,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.3.4/vue-resource.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.10/sweetalert2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
     <script src="/transactions.js"></script>
     <script src="/daysCalculator.min.js"></script>
 
     <script>
         var msgAlert = "Seu endereço não foi encontrado nas transações.";
+        var msgAlert2 = "O valor de contribuição mínimo é de 1 ETH.";
     </script>
     
 </body>

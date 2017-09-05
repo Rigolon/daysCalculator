@@ -7,6 +7,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.10/sweetalert2.min.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
     <div id="app">
@@ -47,8 +48,9 @@
                                             label="Ethereum initial investment"
                                             id="etherium"
                                             v-model.lazy="form.etherium"
-                                            hint="Enter the decimal separator as a comma or dot. Do not use a thousand separator."
                                             suffix="ETH"
+                                            v-on:blur="formEtherium(form.etherium)"
+                                            hint="Enter the decimal separator as a comma or dot. Do not use a thousand separator."
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex md3>
@@ -79,7 +81,7 @@
                                             v-model="form.chronoPower"
                                             type="number"
                                             suffix="%"
-                                            placeholder="Enter your TimeMint to view your ChronoPower"
+                                            label="Enter your TimeMint to view your ChronoPower"
                                             :readonly="true"
                                         ></v-text-field>
                                     </v-flex>
@@ -122,11 +124,11 @@
                                     <caption>Periods</caption>
                                     <thead>
                                         <tr>
-                                            <td>#</td>
-                                            <td>Period</td>
-                                            <td>Start</td>
-                                            <td>End</td>
-                                            <td width="150">Effectiveness</td>
+                                            <th>#</th>
+                                            <th>Period</th>
+                                            <th>Start</th>
+                                            <th>End</th>
+                                            <th width="150">Effectiveness</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -145,22 +147,22 @@
                                     <caption>Simulation</caption>
                                     <thead>
                                         <tr>
-                                            <td>#</td>
-                                            <td>ChronoEra</td>
-                                            <td>ChronoPower</td>
-                                            <td>Value initial</td>
-                                            <td>Value final</td>
-                                            <td>Gain in period</td>
+                                            <th>#</th>
+                                            <th>ChronoEra</th>
+                                            <th>ChronoPower</th>
+                                            <th>Value initial</th>
+                                            <th>Value final</th>
+                                            <th>Gain in period</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(simulation, chave) in simulations">
                                             <td>{{ chave+1 }}</td>
                                             <td>{{ simulation.period }}</td>
-                                            <td>{{ simulation.chronoPower }}</td>
-                                            <td>{{ simulation.start }}</td>
-                                            <td>{{ simulation.last }}</td>
-                                            <td>{{ simulation.diff }}</td>
+                                            <td>{{ simulation.chronoPower.toFixed(20) }}</td>
+                                            <td>{{ simulation.start.toFixed(10) }}</td>
+                                            <td>{{ simulation.last.toFixed(10) }}</td>
+                                            <td>{{ simulation.diff.toFixed(10) }}</td>
                                         </tr>
                                     </tbody>
                                 </table>                                
@@ -180,11 +182,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.3.4/vue-resource.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.10/sweetalert2.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
     <script src="/transactions.js"></script>
     <script src="/daysCalculator.min.js"></script>
 
     <script>
         var msgAlert = "Your address is not found in transactions.";
+        var msgAlert2 = "The minimum contribution amount is 1 ETH.";
     </script>    
 
 </body>
