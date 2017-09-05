@@ -56,7 +56,15 @@ new Vue({
                 }
 
                 this.form.etherium = String(total);
-                this.form.timeMint = Object.keys(this.transactionsAgrouped).indexOf(this.form.etheriumAddress) + 1;
+                var positionTimeMint = Object.keys(this.transactionsAgrouped).indexOf(this.form.etheriumAddress) + 1;
+
+                if(positionTimeMint > 1000)
+                {
+                    positionTimeMint += 300;
+                }
+
+                this.form.timeMint = positionTimeMint;
+                this.formEtherium(this.form.etherium);
             } else {
                 if (!!this.form.etheriumAddress) {
                     swal('Oops..', msgAlert, 'error').catch(swal.noop);
@@ -84,6 +92,7 @@ new Vue({
                 // error callback
             });
         },
+
         getPositionsTransaction: function getPositionsTransaction() {
             var self = this;
             var localTransactions = transactions;
@@ -107,6 +116,14 @@ new Vue({
                     }
                 }
 
+                if( valid )
+                {
+                    if(_t.gasLimit == _t.gasUsed)
+                    {
+                        valid = false;
+                    }
+                }
+
                 if (valid) {
                     if (tmp[_t.sender] === undefined) {
                         tmp[_t.sender] = Array();
@@ -115,6 +132,9 @@ new Vue({
                     tmp[_t.sender].push(_t);
                 }
             };
+
+            // Sort
+            tmp = _.fromPairs(_.sortBy(_.toPairs(tmp), function(a){return new Date(a.time) }).reverse());
 
             self.transactionsAgrouped = tmp;
         },
