@@ -43,16 +43,46 @@ new Vue({
         url: "https://etherchain.org/api/account/0xA723606e907bF84215d5785Ea7f6cD93A0Fbd121/tx/",
         transactions: [],
         transactionsAgrouped: {},
-        startDateEffective: "2017-09-13",
+        startDateEffective: "2017-09-15",
         startDate1Ico: '2017-08-28T13:00:00.000Z',
         startDate2Ico: '2017-08-28T19:00:00.000Z',
         amountStartDate: 5,
-        simulationDays: []
+        simulationDays: [],
+        faq:[{
+                title: "whenStart",
+                text: "within15day"
+            },
+            {
+                title: "whyAreNoDay",
+                text: "tokensNotBeen"
+            },
+            {
+                title: "qualMyChronoPower",
+                text: "estimateLookingEtherScan"
+            },
+            {
+                title: "canIStillContrib",
+                text: "noYourContribBeLost"
+            },
+            {
+                title: "canITopUpNow",
+                text: "noYourContribBeLostDoNotAttemp"
+            },
+            {
+                title: "beCareful",
+                text: "beCarefulWhenClick"
+            },
+            {
+                title: "discussSlack",
+                text: "shillingOwnProject"
+            }
+        ]
     },
 
     mounted: function mounted() {
         var self = this;
         var tmp = {};
+        var getAddress = window.location.pathname.replace('/', '');
 
         for (i = 1; i <= 40; i++) {
             tmp[i] = {
@@ -67,6 +97,12 @@ new Vue({
         self.setTimemints();
         self.createSimulationDays();
         /* self.getTransactions(1); */
+
+        if(getAddress.length === 42)
+        {
+            this.form.etheriumAddress = getAddress;
+            this.getAddress();
+        }
     },
 
     methods: {

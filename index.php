@@ -8,8 +8,23 @@
     <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.10/sweetalert2.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+
 </head>
 <body>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-105822545-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
     <div id="app">
 
         <v-app>
@@ -24,9 +39,9 @@
                         <template>
                             <div class="text-xs-center">
                                 <v-bottom-sheet>
-                                    <v-btn slot="activator" icon>
+                                    <v-btn v-tooltip:bottom="{ html: $t('selectYourLanguage') }" slot="activator" icon>
                                         <v-icon>language</v-icon>
-                                    </v-btn>                                    
+                                    </v-btn>
                                     <v-list>
                                         <v-subheader>{{ $t('selectYourLanguage') }}</v-subheader>
                                             <v-list-tile v-on:click="i18n.locale = locale" v-for="(s, locale) in localeStrings">
@@ -42,13 +57,27 @@
                             </div>
                         </template>
 
+                        <v-dialog lazy absolute width="50%">
+                            <v-btn slot="activator" v-tooltip:bottom="{ html: $t('coffe') }" icon>
+                                <v-icon>free_breakfast</v-icon>
+                            </v-btn>
+                            <v-card>
+                                <v-card-title>
+                                    <div class="headline">{{ $t('coffeTxt') }}</div>
+                                </v-card-title>
+                                <v-card-text>
+                                    <pre>{{ $t('coffe_address') }}</pre>
+                                </v-card-text>
+                            </v-card>
+                        </v-dialog>
+
                         <v-menu
                             offset-x
                             :close-on-content-click="false"
                             :nudge-width="300"
                             v-model="menu"
                             >
-                            <v-btn icon slot="activator">
+                            <v-btn v-tooltip:bottom="{ html: $t('feedback') }" icon slot="activator">
                                 <v-icon v-on:click="menu = true">{{ $t('feedback') }}</v-icon>
                             </v-btn>
                             <v-card>
@@ -97,12 +126,12 @@
                         <v-card-text>
                             <v-container grid-list-md text-xs-center>
                                 <v-layout row wrap>
-                                    <v-flex md3>
+                                    <v-flex md3 xs12>
                                         <v-subheader>
                                             {{ $t('typeAdressEth') }}
                                         </v-subheader>
                                     </v-flex>
-                                    <v-flex md9>
+                                    <v-flex md9 xs12>
                                         <v-text-field
                                             name="etheriumAddress"
                                             :label="$t('typeAdressEth')"
@@ -111,12 +140,12 @@
                                             v-on:blur="getAddress()"
                                         ></v-text-field>
                                     </v-flex>
-                                    <v-flex md3>
+                                    <v-flex md3 xs12>
                                         <v-subheader>
                                             {{ $t('ethInitial') }}
                                         </v-subheader>
                                     </v-flex>
-                                    <v-flex md9>
+                                    <v-flex md9 xs12>
                                         <v-text-field
                                             name="etherium"
                                             :label="$t('ethInvest')"
@@ -127,12 +156,12 @@
                                             :hint="$t('typeSeparator')"
                                         ></v-text-field>
                                     </v-flex>
-                                    <v-flex md3>
+                                    <v-flex md3 xs12>
                                         <v-subheader>
                                             TimeMint
                                         </v-subheader>
                                     </v-flex>
-                                    <v-flex md9>
+                                    <v-flex md9 xs12>
                                         <v-text-field
                                             name="timemint"
                                             :label="$t('numberTimemint')"
@@ -143,12 +172,12 @@
                                             :min="form.min"
                                         ></v-text-field>
                                     </v-flex>
-                                    <v-flex md3>
+                                    <v-flex md3 xs12>
                                         <v-subheader>
                                             ChronoPower
                                         </v-subheader>
                                     </v-flex>
-                                    <v-flex md9>
+                                    <v-flex md9 xs12>
                                         <v-text-field
                                             name="chronoPower"
                                             id="chronoPower"
@@ -170,12 +199,12 @@
                         <v-card-text>
                             <v-container>
                                 <v-layout row wrap>
-                                    <v-flex md3>
+                                    <v-flex md3 xs12>
                                         <v-subheader>
                                             {{ $t('days0') }}
                                         </v-subheader>
                                     </v-flex>
-                                    <v-flex md9>
+                                    <v-flex md9 xs12>
                                         <v-text-field
                                             name="tokensDayZero"
                                             id="tokensDayZero"
@@ -194,11 +223,12 @@
 
                 <template>
                     <div>
-                        <v-tabs dark v-model="active" fixed centered>
+                        <v-tabs dark v-model="active" centered>
                             <v-tabs-bar class="primary">
                                 <v-tabs-item key="tab-01" href="#tab-01" ripple>{{ $t('simulation') }}</v-tabs-item>
                                 <v-tabs-item key="tab-02" href="#tab-02" ripple>{{ $t('simulationInDays') }}</v-tabs-item>
                                 <v-tabs-item key="tab-03" href="#tab-03" ripple>{{ $t('periods') }}</v-tabs-item>
+                                <v-tabs-item key="tab-04" href="#tab-04" ripple>{{ $t('faq') }}</v-tabs-item>
                                 <v-tabs-slider class="dark"></v-tabs-slider>
                             </v-tabs-bar>
                             <v-tabs-items>
@@ -206,7 +236,7 @@
                                     <template>
                                         <v-container grid-list-md>
                                             <v-layout row wrap>
-                                                <v-flex md12>
+                                                <v-flex md12 xs12>
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
@@ -244,7 +274,7 @@
                                     <template>
                                         <v-container grid-list-md>
                                             <v-layout row wrap v-if="canSimulate">
-                                                <v-flex md12>
+                                                <v-flex md12 xs12>
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
@@ -258,7 +288,7 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr v-for="(simulation, chave) in simulations">
-                                                                <td>{{ chave+1 }}</td>
+                                                                <td>{{ Math.ceil((chave+1) / 4) }}</td>
                                                                 <td>{{ simulation.period }}</td>
                                                                 <td>{{ simulation.chronoPower.toFixed(20) }}</td>
                                                                 <td>{{ simulation.start.toFixed(10) }}</td>
@@ -328,10 +358,28 @@
                                         </v-container>
                                     </template>
                                 </v-tabs-content>
+                                <v-tabs-content key="tab-04" id="tab-04">
+                                    <template>
+                                        <v-container grid-list-md>
+                                            <v-layout row wrap>
+                                                <v-flex md8 offset-md2 xs12>
+                                                    <v-expansion-panel>
+                                                        <v-expansion-panel-content v-for="(item,i) in faq" :key="i">
+                                                            <div xs12 slot="header">{{ $t(item.title) }}</div>
+                                                            <v-card>
+                                                                <v-card-text class="grey lighten-3">{{ $t(item.text) }}</v-card-text>
+                                                            </v-card>
+                                                        </v-expansion-panel-content>
+                                                    </v-expansion-panel>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-container>
+                                    </template>
+                                </v-tabs-content>
                             </v-tabs-items>
                         </v-tabs>
                         <v-layout row wrap>
-                            <v-flex md12 class="grey lighten-3 text-xs-center">
+                            <v-flex md12 xs12 class="grey lighten-3 text-xs-center">
                                 <p class="mt-5 mb-5">{{ $t('codeInGit') }} <a target="_blank" href="https://github.com/Rigolon/daysCalculator">GitHub</a></p>
                             </v-flex>
                         </v-layout>
