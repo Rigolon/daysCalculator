@@ -66,7 +66,7 @@
                                     <div class="headline">{{ $t('coffeTxt') }}</div>
                                 </v-card-title>
                                 <v-card-text>
-                                    <pre>{{ $t('coffe_address') }}</pre>
+                                    <pre>ETH ADDRESS: <a target="_blank" :href="'https://etherscan.io/address/' + $t('coffe_address')">{{ $t('coffe_address') }}</a></pre>
                                 </v-card-text>
                             </v-card>
                         </v-dialog>
@@ -253,15 +253,15 @@
                                                                 <td>{{ periodo }}</td>
                                                                 <td>
                                                                     <v-chip v-tooltip:top="{ html: getDay(item.initDay) }">
-                                                                        <span class="bold">{{ item.initDay }}</span>
+                                                                        <span class="bold">{{ item.initDay.toFixed(16) }}</span>
                                                                     </v-chip>
                                                                 </td>
                                                                 <td>
                                                                     <v-chip v-tooltip:top="{ html: getDay(item.lastDay) }">
-                                                                        <span class="bold">{{ item.lastDay }}</span>
+                                                                        <span class="bold">{{ item.lastDay.toFixed(16) }}</span>
                                                                     </v-chip>
                                                                 </td>
-                                                                <td>{{ item.effective.toFixed(20) }}%</td>
+                                                                <td>{{ item.effective.toFixed(16) }}%</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -290,10 +290,10 @@
                                                             <tr v-for="(simulation, chave) in simulations">
                                                                 <td>{{ Math.ceil((chave+1) / 4) }}</td>
                                                                 <td>{{ simulation.period }}</td>
-                                                                <td>{{ simulation.chronoPower.toFixed(20) }}</td>
-                                                                <td>{{ simulation.start.toFixed(10) }}</td>
-                                                                <td>{{ simulation.last.toFixed(10) }}</td>
-                                                                <td>{{ simulation.diff.toFixed(10) }}</td>
+                                                                <td>{{ simulation.chronoPower.toFixed(16) }}</td>
+                                                                <td>{{ simulation.start.toFixed(16) }}</td>
+                                                                <td>{{ simulation.last.toFixed(16) }}</td>
+                                                                <td>{{ simulation.diff.toFixed(16) }}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>                                
@@ -341,10 +341,10 @@
                                                                         type="text"
                                                                     ></v-text-field>
                                                                 </td>
-                                                                <td>{{ data.value.toFixed(20) }}</td>
-                                                                <td>{{ data.valueTotal.toFixed(20) }}</td>
-                                                                <td>{{ data.gain.toFixed(20) }}</td>
-                                                                <td>{{ data.effective.toFixed(10) }}</td>
+                                                                <td>{{ data.value.toFixed(16) }}</td>
+                                                                <td>{{ data.valueTotal.toFixed(16) }}</td>
+                                                                <td>{{ data.gain.toFixed(16) }}</td>
+                                                                <td>{{ data.effective.toFixed(16) }}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -395,7 +395,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.3.4/vue-resource.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.10/sweetalert2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/4.0.4/bignumber.min.js"></script>
     <script src="/assets/js/v-money.js"></script>
     <script src="/assets/js/translator.js"></script>
     <script src="/assets/js/timemints.js"></script>

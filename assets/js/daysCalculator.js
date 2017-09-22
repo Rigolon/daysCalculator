@@ -15,7 +15,8 @@ var moneyConfig = {
 new Vue({
     i18n,
     el: "#app",
-    data: {    
+    data: {
+        bigNumber: BigNumber,
         money: moneyConfig,    
         active: 'tab-01',
         loadingFeedback: false,
@@ -43,7 +44,7 @@ new Vue({
         url: "https://etherchain.org/api/account/0xA723606e907bF84215d5785Ea7f6cD93A0Fbd121/tx/",
         transactions: [],
         transactionsAgrouped: {},
-        startDateEffective: "2017-09-15",
+        startDateEffective: "2017-09-19",
         startDate1Ico: '2017-08-28T13:00:00.000Z',
         startDate2Ico: '2017-08-28T19:00:00.000Z',
         amountStartDate: 5,
@@ -85,11 +86,20 @@ new Vue({
         var getAddress = window.location.pathname.replace('/', '');
 
         for (i = 1; i <= 40; i++) {
+            
+            var BG = null;
+            if(i == 1)
+            {
+                BG = new BigNumber(1);
+            } else {
+                BG = new BigNumber(tmp[i - 1].effective.dividedBy(2));
+            }
+
             tmp[i] = {
                 era: Math.ceil(i / 4),
                 initDay: self.config.chronoEraStep * i - self.config.chronoEraStep + 1,
                 lastDay: self.config.chronoEraStep * i,
-                effective: i == 1 ? 1 : tmp[i - 1].effective / 2
+                effective: new BigNumber(BG)
             };
         };
 
@@ -250,7 +260,7 @@ new Vue({
                     this.form.chronoPower = null;
                     this.form.tokensDayZero = null;
                 } else {
-                    var calc = n * 24;
+                    var calc = Number( (n * 24) );
                     this.form.tokensDayZero = calc;
                 }
             } else {
@@ -290,28 +300,28 @@ new Vue({
 
                 var dayFromStart = moment(self.simulationDays[i].day, self.dateFormat).diff(moment(self.startDateEffective), 'days') + 1;
                 var getPercent = Math.ceil(dayFromStart / step);                
-                var effective = self.simulations[getPercent-1].chronoPower;
+                var effective = new BigNumber(self.simulations[getPercent-1].chronoPower);
 
                 if(i == 0){
-                    value = self.form.tokensDayZero;
+                    value = new BigNumber(self.form.tokensDayZero);
                 } else {
-                    value = self.simulationDays[i-1].valueTotal;
+                    value = new BigNumber(self.simulationDays[i-1].valueTotal);
                 }
 
                 // Add Deposit
-                var deposit = Number(self.simulationDays[i].deposit.replace(',', '.'));
+                var deposit = new BigNumber(Number(self.simulationDays[i].deposit.replace(',', '.')));
 
                 if(deposit > 0){
-                    value += deposit;
+                    value = deposit.plus(value);
                 }
                 
-                var gainDay = ((value / 100) * effective);
-                var valueTotal = value+gainDay;
+                var gainDay = new BigNumber(value).div(100).mul(effective);
+                var valueTotal = new BigNumber(value).plus(gainDay);
 
-                self.simulationDays[i].valueTotal = valueTotal;
-                self.simulationDays[i].value = value;
-                self.simulationDays[i].gain = gainDay;
-                self.simulationDays[i].effective = effective;
+                self.simulationDays[i].valueTotal = new BigNumber(valueTotal);
+                self.simulationDays[i].value = new BigNumber(value);
+                self.simulationDays[i].gain = new BigNumber(gainDay);
+                self.simulationDays[i].effective = new BigNumber(effective);
             }
         }
 
@@ -338,8 +348,8 @@ new Vue({
 
             var n = Number(value);
             if (!!n) {
-                var calc = 0.01 - 0.005 * (n - 1) / 3332;
-                this.form.chronoPower = String(calc * 100);
+                var calc = new BigNumber(n-1).div(3332).mul(0.005).minus(0.01).mul(100);                
+                this.form.chronoPower = new BigNumber(calc).abs();
             }
         }
 
@@ -365,7 +375,7 @@ new Vue({
 
             if (!!self.form.timeMint && !!self.form.chronoPower) {
                 self.calcLoading = true;
-                var value = self.form.tokensDayZero;
+                var value = new BigNumber(self.form.tokensDayZero);
 
                 for (item in self.chronoEra) {
                     var chronoEra = self.chronoEra[item];
@@ -373,23 +383,25 @@ new Vue({
 
                     if (item > 1) {
                         if (chronoEra[item - 2] !== undefined) {
-                            value += chronoEra[item - 2].diff;
+                            value = new BigNumber(value).plus(chronoEra[item - 2].diff);
                         }
-                        start = tmp[item - 2].last;
+                        start = new BigNumber(tmp[item - 2].last);
                     }
 
-                    var percent1 = chronoEra.effective;
-                    var percent2 = this.form.chronoPower;
-                    var calcPercent = percent1 * percent2; //Math.pow(percent2, self.config.chronoEraStep) * percent1;
-                    var percentCumulative = Math.pow(1 + calcPercent / 100, self.config.chronoEraStep);
-                    var valueCumulative = start * percentCumulative;
+                    var percent1 = new BigNumber(chronoEra.effective);
+                    var percent2 = new BigNumber(this.form.chronoPower);
+                    var calcPercent = new BigNumber(percent1).mul(percent2); //Math.pow(percent2, self.config.chronoEraStep) * percent1;                    
+                    
+                    var number01 = new BigNumber(calcPercent).div(100).plus(1);
+                    var percentCumulative = new BigNumber(number01).pow(new BigNumber(self.config.chronoEraStep));                    
+                    var valueCumulative = new BigNumber(start).mul(percentCumulative);
 
                     tmp.push({
                         chronoPower: calcPercent,
                         period: item,
-                        start: Number(start),
+                        start: new BigNumber(start),
                         last: valueCumulative,
-                        diff: valueCumulative - start
+                        diff: new BigNumber(valueCumulative).minus(start)
                     });
                 }
             }
@@ -407,4 +419,12 @@ new Vue({
 
     }
 
+});
+
+
+/* Config Math */
+BigNumber.config({
+    DECIMAL_PLACES: 18,
+    RANGE: 9,
+    ERRORS: false
 });

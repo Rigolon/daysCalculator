@@ -63,7 +63,7 @@ var localeStrings = {
 
         selectYourLanguage: "Select your language",
         whenStart: "When will minting start?",
-        within15day: "Within 15 days of the contribution period ending meaning planned for September 15th.",
+        within15day: "Within 15 days of the contribution period ending meaning planned for September 19th.",
         whyAreNoDay: "Why are there no DAY tokens at my ETH address?",
         tokensNotBeen: "Tokens have not been distributed yet. Please see answer above.",
         qualMyChronoPower: "What is my ChronoPower?",
@@ -128,7 +128,7 @@ var localeStrings = {
         selectYourLanguage: "Selecione seu idioma",
 
         whenStart: "Quando minha mineração começará?",
-        within15day: "Dentro de 15 dias após o final do período de contribuição. Previsto para 15 de setembro.",
+        within15day: "Dentro de 15 dias após o final do período de contribuição. Previsto para 19 de setembro.",
         whyAreNoDay: "Por que não há tokens DIA em meu endereço ETH?",
         tokensNotBeen: "Os tokens ainda não foram distribuídos. Veja a resposta acima.",
         qualMyChronoPower: "Qual é o meu ChronoPower?",
